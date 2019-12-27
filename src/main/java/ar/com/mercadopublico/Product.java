@@ -1,5 +1,6 @@
 package ar.com.mercadopublico;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,10 @@ public class Product {
     private String categoria;
     private String descripcion;
     private List<Offer> offers;
+
+    Product() {
+        offers = new ArrayList<>();
+    }
 
     public String getName() {
         return name;

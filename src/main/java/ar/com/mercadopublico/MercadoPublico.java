@@ -2,6 +2,7 @@ package ar.com.mercadopublico;
 
 import ar.com.HtmlUtil;
 import ar.com.Tender;
+import org.apache.commons.collections.CollectionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -94,9 +95,9 @@ public class MercadoPublico {
     }
 
     private List<Product> findProducts(Document htmlDocument, boolean hasOffers) throws IOException {
-        Map<String, List<Offer>> clasifiedOffers = null;
+        Map<String, List<Offer>> classifiedOffers = null;
         if (hasOffers) {
-            clasifiedOffers = clasifyOffers(findOffers(htmlDocument));
+            classifiedOffers = clasifyOffers(findOffers(htmlDocument));
         }
         List<Product> productsOrServices = new ArrayList<>();
         boolean continueLooping = true;
@@ -111,8 +112,8 @@ public class MercadoPublico {
                 product.setUnidad(HtmlUtil.getElementById(htmlDocument, "grvProducto_ctl" + count + "_lblUnidad"));
                 product.setCategoria(HtmlUtil.getElementById(htmlDocument, "grvProducto_ctl" + count + "_lblCategoria"));
                 product.setDescripcion(HtmlUtil.getElementById(htmlDocument, "grvProducto_ctl" + count + "_lblDescripcion"));
-                if (hasOffers) {
-                    product.setOffers(clasifiedOffers.get(product.getDescripcion()));
+                if (hasOffers && CollectionUtils.isNotEmpty(classifiedOffers.get(product.getDescripcion()))) {
+                    product.setOffers(classifiedOffers.get(product.getDescripcion()));
                 }
                 productsOrServices.add(product);
             }
